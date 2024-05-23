@@ -1,0 +1,23 @@
+{
+  "name": "jutge-problems-validator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "sample": "ts-node scripts/sample.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cpp-node-analyzer": "file:../analyzer",
+    "ts-node": "^10.9.2"
+  },
+  "devDependencies": {
+    "@babel/preset-typescript": "^7.24.1",
+    "@types/jest": "^29.5.12",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "readline-sync": "^1.4.10"
+  }
+}

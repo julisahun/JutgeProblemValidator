@@ -1,0 +1,26 @@
+{
+  "P12509": {
+    "juli_sahun": {
+      "valid": true,
+      "errors": []
+    },
+    "juli_sahun_interative": {
+      "valid": false,
+      "errors": ["The program is not recursive"]
+    },
+    "juli_sahun_wrong_function": {
+      "valid": false,
+      "errors": ["The program does not use all the required functions: factorial"]
+    }
+  },
+  "P79817": {
+    "juli_sahun": {
+      "valid": true,
+      "errors": []
+    },
+    "juli_sahun_recursive": {
+      "valid": false,
+      "errors": ["The program is recursive"]
+    }
+  }
+}
