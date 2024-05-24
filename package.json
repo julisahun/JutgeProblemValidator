@@ -11,7 +11,8 @@
   "scripts": {
     "build": "tsup",
     "test": "jest",
-    "sample": "ts-node scripts/sample.ts"
+    "sample": "ts-node scripts/sample.ts",
+    "release": "ts-node scripts/release-version.ts"
   },
   "author": "",
   "license": "ISC",
