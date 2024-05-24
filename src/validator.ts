@@ -1,8 +1,6 @@
-import { analyzerResult } from 'cpp-node-analyzer/src/types';
 import defaultOptions from './defaultOptions';
 import { ValidatorOptions, Verdict } from './types';
-import Analyzer from 'cpp-node-analyzer';
-
+import Analyzer, { AnalyzerResult } from 'cpp-node-analyzer';
 class Validator {
   options: ValidatorOptions;
   verdict: Verdict;
@@ -33,7 +31,7 @@ class Validator {
       errors: []
     };
     const cppNodeAnalyzer = new Analyzer();
-    let result: analyzerResult;
+    let result: AnalyzerResult;
     result = cppNodeAnalyzer.analyze(code);
     this.validateLibraries(result);
     this.validateProgramType(result);
@@ -42,7 +40,7 @@ class Validator {
     return this.verdict;
   }
 
-  validateLibraries(result: analyzerResult) {
+  validateLibraries(result: AnalyzerResult) {
     let usedLibraries = result.analysis.usedLibraries;
     const { forced: forcedLibraries, prohibited: prohibitedLibraries } = this.options.libraries;
     const usesForcedLibraries = forcedLibraries.every(forcedLibrary => usedLibraries.includes(forcedLibrary));
@@ -57,7 +55,7 @@ class Validator {
     }
   }
 
-  validateProgramType(result: analyzerResult) {
+  validateProgramType(result: AnalyzerResult) {
     const { programType } = this.options;
     // console.log(programType, result.analysis.isRecursive, result.analysis.isIterative)
     if ('recursive' in programType && programType.recursive !== result.analysis.isRecursive) {
@@ -70,7 +68,7 @@ class Validator {
     }
   }
 
-  validateFunctions(result: analyzerResult) {
+  validateFunctions(result: AnalyzerResult) {
     const { mustUseFunctions } = this.options;
     const functions = result.analysis.functions;
     const missingFunctions = mustUseFunctions.filter(mustUseFunction => {
@@ -92,7 +90,7 @@ class Validator {
     }
   }
 
-  validateProperties(result: analyzerResult) {
+  validateProperties(result: AnalyzerResult) {
     const { forced, prohibited } = this.options.properties;
     const properties = result.analysis.properties;
     const missingProperties = forced.filter(forcedProperty => !properties.some(property => property.name === forcedProperty.name && property.type === forcedProperty.type));
