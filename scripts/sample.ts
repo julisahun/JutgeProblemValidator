@@ -15,7 +15,7 @@ function sample(programs: string[], name: string) {
   }
 }
 
-function main() {
+async function main() {
   let validator = new Validator()
   validator.setOptions({ programType: { iterative: true, recursive: false }, libraries: { prohibited: ['cmath'] } })
 
@@ -25,7 +25,7 @@ function main() {
   for (let source of programs.slice(0, n)) {
     i++
     try {
-      let result = validator.validate(source)
+      let result = await validator.validate(source)
       if (result.valid) valid.push(source)
       else invalid.push(source)
     } catch (e) {

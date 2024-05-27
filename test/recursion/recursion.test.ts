@@ -5,8 +5,8 @@ import verdicts from './verdicts.json';
 function validateProgram(programId: string, validator: Validator) {
   let sources = readSources(__dirname + '/sources/' + programId)
   for (let { source, name } of sources) {
-    it(`program ${programId} - ${name}`, () => {
-      let result = evaluate(source, validator)
+    it(`program ${programId} - ${name}`, async () => {
+      let result = await evaluate(source, validator)
       expect(result).toEqual(verdicts[programId][name])
     })
   }

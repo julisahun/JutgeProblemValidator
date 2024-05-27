@@ -25,14 +25,14 @@ class Validator {
     }
   }
 
-  validate(code: string) {
+  async validate(code: string) {
     this.verdict = {
       valid: true,
       errors: []
     };
     const cppNodeAnalyzer = new Analyzer();
     let result: AnalyzerResult;
-    result = cppNodeAnalyzer.analyze(code);
+    result = await cppNodeAnalyzer.analyze(code);
     this.validateLibraries(result);
     this.validateProgramType(result);
     this.validateFunctions(result);
