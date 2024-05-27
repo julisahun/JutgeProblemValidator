@@ -17,7 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cpp-node-analyzer": "^1.0.6",
+    "cpp-node-analyzer": "latests",
     "ts-node": "^10.9.2"
   },
   "devDependencies": {
