@@ -1,5 +1,5 @@
 import Validator from '../src/validator'
-import programs from './P79817.json'
+import programs from './sources/P12509.json'
 import readlineSync from 'readline-sync'
 
 
