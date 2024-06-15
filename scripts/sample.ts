@@ -1,7 +1,30 @@
 import Validator from '../src/validator'
-import programs from './sources/P12509.json'
 import readlineSync from 'readline-sync'
+const { Select, Input } = require('enquirer');
+import fs from 'fs'
 
+async function loadSamples() {
+  const fileNames = fs.readdirSync('./scripts/sources/')
+
+  const selector = await new Select({
+    name: 'sample',
+    message: 'Select a sample:',
+    choices: fileNames
+  })
+
+  const prompt = new Input({
+    message: 'How many programs do you want to validate? (default: all)'
+  });
+  let selectedFile = await selector.run()
+  let n = await prompt.run()
+  let programs = JSON.parse(fs.readFileSync(`./scripts/sources/${selectedFile}`, 'utf-8'))
+  if (!n) n = programs.length
+  n = Math.max(0, n)
+  n = Math.min(n, programs.length)
+  if (typeof programs[0] !== 'string' && typeof programs[0].code === 'string')
+    programs = programs.map((p: any) => p.code)
+  return { n, programs, selectedFile }
+}
 
 function sample(programs: string[], name: string) {
   let res = readlineSync.question(`Do you want to see the ${name} programs? (y/n)`)
@@ -17,10 +40,11 @@ function sample(programs: string[], name: string) {
 
 async function main() {
   let validator = new Validator()
-  validator.setOptions({ programType: { iterative: true, recursive: false }, libraries: { prohibited: ['cmath'] } })
+  validator.setOptions({ libraries: { prohibited: ['string'] } })
 
   let [valid, invalid, errors] = [[], [], []]
-  let n = programs.length
+  let { n, programs, selectedFile } = await loadSamples()
+  console.log(`Validating ${n} programs from ${selectedFile}...`)
   let i = 0
   for (let source of programs.slice(0, n)) {
     i++
@@ -36,9 +60,10 @@ async function main() {
       errors.push(source)
     }
     if (i % 100 === 0) console.log(`${i}/${n} programs validated`)
+    if (i % 1000 === 0) console.log(`Valid: ${(valid.length / i * 100).toFixed(2)}%, Invalid: ${(invalid.length / i * 100).toFixed(2)}%, Errors: ${(errors.length / i * 100).toFixed(2)}%`)
   }
   let total = n
-  let result = `Valid: ${valid.length / total * 100}%, Invalid: ${invalid.length / total * 100}%, Errors: ${errors.length / total * 100}%`
+  let result = `Valid: ${(valid.length / total * 100).toFixed(2)}%, Invalid: ${(invalid.length / total * 100).toFixed(2)}%, Errors: ${(errors.length / total * 100).toFixed(2)}%`
   console.log(result)
   sample(valid, 'valid')
   sample(invalid, 'invalid')
@@ -47,5 +72,3 @@ async function main() {
 }
 
 main()
-
-
